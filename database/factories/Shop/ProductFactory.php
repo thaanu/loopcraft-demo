@@ -42,7 +42,7 @@ class ProductFactory extends Factory
         return $this->afterCreating(function (Product $product) {
             try {
                 $product
-                    ->addMediaFromUrl(DatabaseSeeder::IMAGE_URL)
+                    ->addMediaFromUrl('https://source.unsplash.com/random/200x200/?img=1')
                     ->toMediaCollection('product-images');
             } catch (UnreachableUrl $exception) {
                 return;

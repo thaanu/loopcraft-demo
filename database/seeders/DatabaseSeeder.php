@@ -38,65 +38,65 @@ class DatabaseSeeder extends Seeder
         $this->command->info('Admin user created.');
 
         // Shop
-        $categories = ShopCategory::factory()->count(20)
+        $categories = ShopCategory::factory()->count(5)
             ->has(
                 ShopCategory::factory()->count(3),
                 'children'
             )->create();
         $this->command->info('Shop categories created.');
 
-        $brands = Brand::factory()->count(20)
+        $brands = Brand::factory()->count(5)
             ->has(Address::factory()->count(rand(1, 3)))
             ->create();
         $this->command->info('Shop brands created.');
 
-        $customers = Customer::factory()->count(1000)
+        $customers = Customer::factory()->count(4)
             ->has(Address::factory()->count(rand(1, 3)))
             ->create();
         $this->command->info('Shop customers created.');
 
-        $products = Product::factory()->count(50)
+        $products = Product::factory()->count(2)
             ->sequence(fn ($sequence) => ['shop_brand_id' => $brands->random(1)->first()->id])
-            ->hasAttached($categories->random(rand(3, 6)), ['created_at' => now(), 'updated_at' => now()])
+            ->hasAttached($categories->random(rand(1,5)), ['created_at' => now(), 'updated_at' => now()])
             ->has(
-                Comment::factory()->count(rand(10, 20))
+                Comment::factory()->count(5)
                     ->state(fn (array $attributes, Product $product) => ['customer_id' => $customers->random(1)->first()->id]),
             )
             ->create();
         $this->command->info('Shop products created.');
 
-        $orders = Order::factory()->count(1000)
-            ->sequence(fn ($sequence) => ['shop_customer_id' => $customers->random(1)->first()->id])
-            ->has(Payment::factory()->count(rand(1, 3)))
-            ->has(
-                OrderItem::factory()->count(rand(2, 5))
-                    ->state(fn (array $attributes, Order $order) => ['shop_product_id' => $products->random(1)->first()->id]),
-                'items'
-            )
-            ->create();
+        // $orders = Order::factory()->count(10)
+        //     ->sequence(fn ($sequence) => ['shop_customer_id' => $customers->random(1)->first()->id])
+        //     ->has(Payment::factory()->count(3))
+        //     ->has(
+        //         OrderItem::factory()->count(5)
+        //             ->state(fn (array $attributes, Order $order) => ['shop_product_id' => $products->random(1)->first()->id]),
+        //         'items'
+        //     )
+        //     ->create();
 
-        foreach ($orders->random(rand(5, 8)) as $order) {
-            Notification::make()
-                ->title('New order')
-                ->icon('heroicon-o-shopping-bag')
-                ->body("**{$order->customer->name} ordered {$order->items->count()} products.**")
-                ->actions([
-                    Action::make('View')
-                        ->url(OrderResource::getUrl('edit', ['record' => $order])),
-                ])
-                ->sendToDatabase($user);
-        }
-        $this->command->info('Shop orders created.');
+        // foreach ($orders->random(5) as $order) {
+        //     Notification::make()
+        //         ->title('New order')
+        //         ->icon('heroicon-o-shopping-bag')
+        //         ->body("**{$order->customer->name} ordered {$order->items->count()} products.**")
+        //         ->actions([
+        //             Action::make('View')
+        //                 ->url(OrderResource::getUrl('edit', ['record' => $order])),
+        //         ])
+        //         ->sendToDatabase($user);
+        // }
+        // $this->command->info('Shop orders created.');
 
         // Blog
-        $blogCategories = BlogCategory::factory()->count(20)->create();
+        $blogCategories = BlogCategory::factory()->count(5)->create();
         $this->command->info('Blog categories created.');
 
-        Author::factory()->count(20)
+        Author::factory()->count(1)
             ->has(
-                Post::factory()->count(5)
+                Post::factory()->count(2)
                     ->has(
-                        Comment::factory()->count(rand(5, 10))
+                        Comment::factory()->count(2)
                             ->state(fn (array $attributes, Post $post) => ['customer_id' => $customers->random(1)->first()->id]),
                     )
                     ->state(fn (array $attributes, Author $author) => ['blog_category_id' => $blogCategories->random(1)->first()->id]),

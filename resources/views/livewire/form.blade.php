@@ -1,4 +1,4 @@
-<form wire:submit.prevent="submit" class="max-w-xl mx-auto p-8">
+<form wire:submit.prevent="submit" class="max-w-xl p-8 mx-auto">
     {{ $this->form }}
 
     <x-forms::button class="mt-2" type="submit">
