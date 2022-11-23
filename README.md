@@ -9,7 +9,7 @@ A demo application to illustrate how Admin works.
 Clone the repo locally:
 
 ```sh
-git clone https://github.com/laravel-filament/demo.git filament-demo && cd filament-demo
+git clone https://github.com/theloopcraft/demo.git
 ```
 
 Install PHP dependencies:
