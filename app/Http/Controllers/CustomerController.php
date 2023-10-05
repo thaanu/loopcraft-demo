@@ -20,7 +20,7 @@ class CustomerController extends Controller
     /**
      * This method shows all records and also filters records on giving a search query
      * 
-     * @param string $query Search by product name
+     * @param string $query Search
      * 
      * @return object JSON response
      */
@@ -33,7 +33,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * This method create new customer
+     * This method create new payment
      * 
      * @return object JSON Response
      */
@@ -43,19 +43,19 @@ class CustomerController extends Controller
         // Validation
         validator($request->all(), $this->validationRules)->validate();
 
-        $category = new Customer;
+        $customer = new Customer;
 
         // Required Fields
-        $category->name = $request->post('name');
-        $category->email = $request->post('email');
-        $category->gender = $request->post('gender');
+        $customer->name = $request->post('name');
+        $customer->email = $request->post('email');
+        $customer->gender = $request->post('gender');
 
         // Optional Fields
-        $category->photo = $request->post('photo');
-        $category->phone = $request->post('phone');
-        $category->birthday = $request->post('birthday');
+        $customer->photo = $request->post('photo');
+        $customer->phone = $request->post('phone');
+        $customer->birthday = $request->post('birthday');
 
-        $category->save();
+        $customer->save();
         return Response()->json([
             'message' => 'New customer added'
         ]);
@@ -74,19 +74,19 @@ class CustomerController extends Controller
         // Validation
         validator($request->all(), $this->validationRules)->validate();
 
-        $category = Customer::find($brandId);
+        $customer = Customer::find($brandId);
 
         // Required Fields
-        $category->name = $request->post('name');
-        $category->email = $request->post('email');
-        $category->gender = $request->post('gender');
+        $customer->name = $request->post('name');
+        $customer->email = $request->post('email');
+        $customer->gender = $request->post('gender');
 
         // Optional Fields
-        $category->photo = $request->post('photo');
-        $category->phone = $request->post('phone');
-        $category->birthday = $request->post('birthday');
+        $customer->photo = $request->post('photo');
+        $customer->phone = $request->post('phone');
+        $customer->birthday = $request->post('birthday');
 
-        $category->update();
+        $customer->update();
 
         return Response()->json([
             'message' => 'Customer updated'
