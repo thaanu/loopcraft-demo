@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Shop\Brand;
 use Illuminate\Http\Request;
+use App\Models\Shop\Category;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BrandController extends Controller
+class CategoryController extends Controller
 {
 
     use SoftDeletes;
@@ -28,7 +28,7 @@ class BrandController extends Controller
     function read( string $query = null ) 
     {
 
-        $result = $query ? Brand::where('name', 'like', "%$query%")->get() : Brand::all();
+        $result = $query ? Category::where('name', 'like', "%$query%")->get() : Category::all();
         return Response()->json($result);
         
     }
@@ -44,24 +44,23 @@ class BrandController extends Controller
         // Validation
         validator($request->all(), $this->validationRules)->validate();
 
-        $brand = new Brand;
+        $category = new Category;
 
         // Required Fields
-        $brand->name = $request->post('name');
-        $brand->slug = $request->post('slug');
-        $brand->position = $request->post('position');
-        $brand->is_visible = $request->post('is_visible'); // True / False
+        $category->name = $request->post('name');
+        $category->slug = $request->post('slug');
+        $category->position = $request->post('position');
+        $category->is_visible = $request->post('is_visible'); // True / False
 
         // Optional Fields
-        $brand->website = $request->post('website');
-        $brand->description = $request->post('description');
-        $brand->seo_title = $request->post('seo_title');
-        $brand->seo_description = $request->post('seo_description');
-        $brand->sort = $request->post('sort');
+        $category->description = $request->post('description');
+        $category->seo_title = $request->post('seo_title');
+        $category->seo_description = $request->post('seo_description');
+        $category->parent_id = $request->post('parent_id');
 
-        $brand->save();
+        $category->save();
         return Response()->json([
-            'message' => 'New brand added'
+            'message' => 'New category added'
         ]);
     }
     
@@ -78,26 +77,25 @@ class BrandController extends Controller
         // Validation
         validator($request->all(), $this->validationRules)->validate();
 
-        $brand = Brand::find($brandId);
+        $category = Category::find($brandId);
 
         // Required Fields
-        $brand->name = $request->post('name');
-        $brand->slug = $request->post('slug');
-        $brand->position = $request->post('position');
-        $brand->is_visible = $request->post('is_visible'); // True / False
+        $category->name = $request->post('name');
+        $category->slug = $request->post('slug');
+        $category->position = $request->post('position');
+        $category->is_visible = $request->post('is_visible'); // True / False
 
         // Optional Fields
-        $brand->website = $request->post('website');
-        $brand->description = $request->post('description');
-        $brand->seo_title = $request->post('seo_title');
-        $brand->seo_description = $request->post('seo_description');
-        $brand->sort = $request->post('sort');
+        $category->description = $request->post('description');
+        $category->seo_title = $request->post('seo_title');
+        $category->seo_description = $request->post('seo_description');
+        $category->parent_id = $request->post('parent_id');
 
 
-        $brand->update();
+        $category->update();
 
         return Response()->json([
-            'message' => 'Brand updated'
+            'message' => 'Category updated'
         ]);
     }
 
@@ -110,10 +108,10 @@ class BrandController extends Controller
      */
     function delete( int $id ) 
     {
-        $brand = Brand::find($id);
-        $brand->delete();
+        $category = Category::find($id);
+        $category->delete();
         return Response()->json([
-            'message' => 'Brand removed'
+            'message' => 'Category removed'
         ]);
     }
 }

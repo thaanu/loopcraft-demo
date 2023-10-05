@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,3 +37,9 @@ Route::get('brands/list/{query?}', [BrandController::class, 'read'])->middleware
 Route::post('brands/create', [BrandController::class, 'create'])->middleware('auth:sanctum');
 Route::put('brands/{id}/update', [BrandController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('brands/{id}/delete', [BrandController::class, 'delete'])->middleware('auth:sanctum');
+
+// Category
+Route::get('category/list/{query?}', [CategoryController::class, 'read'])->middleware('auth:sanctum');
+Route::post('category/create', [CategoryController::class, 'create'])->middleware('auth:sanctum');
+Route::put('category/{id}/update', [CategoryController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('category/{id}/delete', [CategoryController::class, 'delete'])->middleware('auth:sanctum');
