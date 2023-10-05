@@ -63,3 +63,9 @@ Route::get('payment/list/{query?}', [PaymentController::class, 'read'])->middlew
 Route::post('payment/create', [PaymentController::class, 'create'])->middleware('auth:sanctum');
 Route::put('payment/{id}/update', [PaymentController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('payment/{id}/delete', [PaymentController::class, 'delete'])->middleware('auth:sanctum');
+
+// Order Address
+Route::get('order-address/list/{query?}', [OrderAddressController::class, 'read'])->middleware('auth:sanctum');
+Route::post('order-address/create', [OrderAddressController::class, 'create'])->middleware('auth:sanctum');
+Route::put('order-address/{id}/update', [OrderAddressController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('order-address/{id}/delete', [OrderAddressController::class, 'delete'])->middleware('auth:sanctum');
