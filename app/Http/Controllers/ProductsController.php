@@ -11,50 +11,48 @@ class ProductsController extends Controller
 
     use SoftDeletes;
 
+    protected $validationRules = [
+        'name' => ['required'],
+        'qty' => ['required', 'min:1'],
+        'security_stock' => ['required', 'min:1'],
+        'featured' => ['required', 'min:1'],
+        'is_visible' => ['required', 'boolean'],
+        'backorder' => ['required', 'boolean'],
+        'requires_shipping' => ['required', 'boolean'],
+        'weight_unit' => ['required'],
+        'height_unit' => ['required'],
+        'width_unit' => ['required'],
+        'depth_unit' => ['required'],
+        'volume_unit' => ['required']
+    ];
+
     /**
-     * This method lists all the products
+     * This method shows all the products and also filters product on giving a search query
+     * 
+     * @param string $query Search by product name
      * 
      * @return object JSON response
      */
-    function list() 
+    function read( string $query = null ) 
     {
-        return Response()->json(Product::all());
-    }
-
-    /**
-     * This method returns a list of items according to the search query
-     * 
-     * @param string $productName
-     * 
-     * @return object JSON Response
-     */
-    function search( string $productName ) 
-    {
-        // $results = Product::where('name', 'like', "%$productName%")->get();
-        // return Response()->json($results);
-        return $productName;
+        $result = $query ? Product::where('name', 'like', "%$query%")->get() : Product::all();
+        return Response()->json($result);
     }
 
     /**
      * This product create a new product
-     * Todo: Need to work on this method to create all the fields
      * 
      * @return object JSON Response
      */
     function create( Request $request )
     {
-        // Rules for the input
-        $rules = [
-            'name' => ['required'],
-            'qty' => ['required', 'min:1'],
-            'security_stock' => ['required', 'min:1'],
-            'featured' => ['required', 'min:1'],
-        ];
 
         // Validation
-        validator($request->all(), $rules)->validate();
+        validator($request->all(), $this->validationRules)->validate();
 
         $product = new Product;
+
+        // Required Fields
         $product->name = $request->post('name');
         $product->qty = $request->post('qty');
         $product->security_stock = $request->post('security_stock');
@@ -68,6 +66,28 @@ class ProductsController extends Controller
         $product->depth_unit = $request->post('depth_unit'); // String
         $product->depth_unit = $request->post('depth_unit'); // Number
         $product->volume_unit = $request->post('volume_unit'); // String
+
+
+        // Optional fields
+        $product->shop_brand_id = $request->post('shop_brand_id');
+        $product->slug = $request->post('slug');
+        $product->sku = $request->post('sku');
+        $product->barcode = $request->post('barcode');
+        $product->description = $request->post('description');
+        $product->old_price = $request->post('old_price');
+        $product->price = $request->post('price');
+        $product->cost = $request->post('cost');
+        $product->type = $request->post('type');
+        $product->published_at = $request->post('published_at');
+        $product->seo_title = $request->post('seo_title');
+        $product->seo_description = $request->post('seo_description');
+        $product->weight_value = $request->post('weight_value');
+        $product->height_value = $request->post('height_value');
+        $product->width_value = $request->post('width_value');
+        $product->depth_value = $request->post('depth_value');
+        $product->volume_value = $request->post('volume_value');
+
+
         $product->save();
         return Response()->json([
             'message' => 'New Product Added'
@@ -76,7 +96,6 @@ class ProductsController extends Controller
     
     /**
      * This method updates a given product
-     * Todo: Need to work on this method to update all the fields
      * 
      * @param int $productId UID of the product
      * 
@@ -84,18 +103,13 @@ class ProductsController extends Controller
      */
     function update( int $productId, Request $request) 
     {
-        // Rules for the input
-        $rules = [
-            'name' => ['required'],
-            'qty' => ['required', 'min:1'],
-            'security_stock' => ['required', 'min:1'],
-            'featured' => ['required', 'min:1'],
-        ];
 
         // Validation
-        validator($request->all(), $rules)->validate();
+        validator($request->all(), $this->validationRules)->validate();
 
         $product = Product::find($productId);
+
+        // Required fields
         $product->name = $request->post('name');
         $product->qty = $request->post('qty');
         $product->security_stock = $request->post('security_stock');
@@ -107,8 +121,28 @@ class ProductsController extends Controller
         $product->height_unit = $request->post('height_unit'); // String
         $product->width_unit = $request->post('width_unit'); // String
         $product->depth_unit = $request->post('depth_unit'); // String
-        $product->depth_unit = $request->post('depth_unit'); // Number
         $product->volume_unit = $request->post('volume_unit'); // String
+
+        // Optional fields
+        $product->shop_brand_id = $request->post('shop_brand_id');
+        $product->slug = $request->post('slug');
+        $product->sku = $request->post('sku');
+        $product->barcode = $request->post('barcode');
+        $product->description = $request->post('description');
+        $product->old_price = $request->post('old_price');
+        $product->price = $request->post('price');
+        $product->cost = $request->post('cost');
+        $product->type = $request->post('type');
+        $product->published_at = $request->post('published_at');
+        $product->seo_title = $request->post('seo_title');
+        $product->seo_description = $request->post('seo_description');
+        $product->weight_value = $request->post('weight_value');
+        $product->height_value = $request->post('height_value');
+        $product->width_value = $request->post('width_value');
+        $product->depth_value = $request->post('depth_value');
+        $product->volume_value = $request->post('volume_value');
+
+
         $product->update();
         return Response()->json([
             'message' => 'Product updated'

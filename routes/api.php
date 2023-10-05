@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\BrandController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,10 +21,18 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+// Authorization Controller
 Route::post('login', [AuthController::class, 'authenticate']);
 
-Route::get('products/list', [ProductsController::class, 'list'])->middleware('auth:sanctum');
-Route::get('products/search/{query}', [ProductsController::class, 'search'])->middleware('auth:sanctum');
+// Products Controller
+Route::get('products/list/{query?}', [ProductsController::class, 'read'])->middleware('auth:sanctum');
 Route::post('products/create', [ProductsController::class, 'create'])->middleware('auth:sanctum');
 Route::put('products/{id}/update', [ProductsController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('products/{id}/delete', [ProductsController::class, 'delete'])->middleware('auth:sanctum');
+
+
+// Brand Controller
+Route::get('brands/list/{query?}', [BrandController::class, 'read'])->middleware('auth:sanctum');
+Route::post('brands/create', [BrandController::class, 'create'])->middleware('auth:sanctum');
+Route::put('brands/{id}/update', [BrandController::class, 'update'])->middleware('auth:sanctum');
+Route::delete('brands/{id}/delete', [BrandController::class, 'delete'])->middleware('auth:sanctum');
