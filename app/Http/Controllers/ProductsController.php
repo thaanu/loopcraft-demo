@@ -47,6 +47,9 @@ class ProductsController extends Controller
     function create( Request $request )
     {
 
+
+        // todo: need to implement variation part
+
         // Validation
         validator($request->all(), $this->validationRules)->validate();
 
@@ -103,9 +106,13 @@ class ProductsController extends Controller
      */
     function update( int $productId, Request $request) 
     {
+        
+        // todo: need to implement variation part
+
 
         // Validation
         validator($request->all(), $this->validationRules)->validate();
+
 
         $product = Product::find($productId);
 

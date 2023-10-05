@@ -3,23 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Shop\Category;
+use App\Models\Shop\Order;
+use App\Models\Shop\OrderAddress;
+use App\Models\Shop\OrderItem;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CategoryController extends Controller
+class OrderController extends Controller
 {
-
     use SoftDeletes;
 
     protected $validationRules = [
         'name' => ['required'],
-        'slug' => ['required'],
-        'position' => ['required', 'min:0'],
-        'is_visible' => ['required', 'boolean']
+        'email' => ['required', 'email'],
+        'gender' => ['required'],
+        'birthday' => ['date']
     ];
 
     /**
-     * This method shows all the products and also filters product on giving a search query
+     * This method shows all records and also filters records on giving a search query
      * 
      * @param string $query Search
      * 
@@ -28,13 +29,13 @@ class CategoryController extends Controller
     function read( string $query = null ) 
     {
 
-        $result = $query ? Category::where('name', 'like', "%$query%")->get() : Category::all();
+        $result = $query ? Order::where('name', 'like', "%$query%")->get() : Order::all();
         return Response()->json($result);
         
     }
 
     /**
-     * This product create a new product
+     * This method create new order
      * 
      * @return object JSON Response
      */
@@ -44,23 +45,21 @@ class CategoryController extends Controller
         // Validation
         validator($request->all(), $this->validationRules)->validate();
 
-        $category = new Category;
+        $category = new Order;
 
         // Required Fields
         $category->name = $request->post('name');
-        $category->slug = $request->post('slug');
-        $category->position = $request->post('position');
-        $category->is_visible = $request->post('is_visible'); // True / False
+        $category->email = $request->post('email');
+        $category->gender = $request->post('gender');
 
         // Optional Fields
-        $category->description = $request->post('description');
-        $category->seo_title = $request->post('seo_title');
-        $category->seo_description = $request->post('seo_description');
-        $category->parent_id = $request->post('parent_id');
+        $category->photo = $request->post('photo');
+        $category->phone = $request->post('phone');
+        $category->birthday = $request->post('birthday');
 
         $category->save();
         return Response()->json([
-            'message' => 'New category added'
+            'message' => 'New order added'
         ]);
     }
     
@@ -77,25 +76,22 @@ class CategoryController extends Controller
         // Validation
         validator($request->all(), $this->validationRules)->validate();
 
-        $category = Category::find($brandId);
+        $category = Order::find($brandId);
 
         // Required Fields
         $category->name = $request->post('name');
-        $category->slug = $request->post('slug');
-        $category->position = $request->post('position');
-        $category->is_visible = $request->post('is_visible'); // True / False
+        $category->email = $request->post('email');
+        $category->gender = $request->post('gender');
 
         // Optional Fields
-        $category->description = $request->post('description');
-        $category->seo_title = $request->post('seo_title');
-        $category->seo_description = $request->post('seo_description');
-        $category->parent_id = $request->post('parent_id');
-
+        $category->photo = $request->post('photo');
+        $category->phone = $request->post('phone');
+        $category->birthday = $request->post('birthday');
 
         $category->update();
 
         return Response()->json([
-            'message' => 'Category updated'
+            'message' => 'Order updated'
         ]);
     }
 
@@ -108,10 +104,10 @@ class CategoryController extends Controller
      */
     function delete( int $id ) 
     {
-        $category = Category::find($id);
+        $category = Order::find($id);
         $category->delete();
         return Response()->json([
-            'message' => 'Category removed'
+            'message' => 'Order removed'
         ]);
     }
 }

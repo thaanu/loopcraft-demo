@@ -21,7 +21,7 @@ class BrandController extends Controller
     /**
      * This method shows all the products and also filters product on giving a search query
      * 
-     * @param string $query Search by product name
+     * @param string $query Search
      * 
      * @return object JSON response
      */

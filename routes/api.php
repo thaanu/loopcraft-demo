@@ -31,6 +31,7 @@ Route::post('login', [AuthController::class, 'authenticate']);
 // Products Controller
 Route::get('products/list/{query?}', [ProductsController::class, 'read'])->middleware('auth:sanctum');
 Route::post('products/create', [ProductsController::class, 'create'])->middleware('auth:sanctum');
+Route::post('products/upload', [ProductsController::class, 'upload'])->middleware('auth:sanctum');
 Route::put('products/{id}/update', [ProductsController::class, 'update'])->middleware('auth:sanctum');
 Route::delete('products/{id}/delete', [ProductsController::class, 'delete'])->middleware('auth:sanctum');
 
